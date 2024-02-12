@@ -12,6 +12,7 @@ import useTouchEvent from './hooks/useTouchEvent';
 import useStatus from './hooks/useStatus';
 import Operations from './Operations';
 import { BASE_SCALE_RATIO } from './previewConfig';
+import useSwipe from './hooks/useSwipe';
 
 export type ToolbarRenderInfoType = {
   icons: {
@@ -239,6 +240,9 @@ const Preview: React.FC<PreviewProps> = props => {
     }
   };
 
+const swipeHandlers = useSwipe({ onSwipedLeft: () => onSwitchRight(), onSwipedRight: () => onSwitchLeft() });
+
+
   useEffect(() => {
     const onKeyDownListener = addEventListener(window, 'keydown', onKeyDown, false);
 
@@ -274,7 +278,7 @@ const Preview: React.FC<PreviewProps> = props => {
   );
 
   return (
-    <>
+    <div {...swipeHandlers}>
       <Dialog
         transitionName={transitionName}
         maskTransitionName={maskTransitionName}
@@ -326,7 +330,7 @@ const Preview: React.FC<PreviewProps> = props => {
         onClose={onClose}
         zIndex={restProps.zIndex !== undefined ? restProps.zIndex + 1 : undefined}
       />
-    </>
+    </div>
   );
 };
 
